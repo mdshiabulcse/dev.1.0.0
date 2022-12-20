@@ -179,13 +179,16 @@ export default {
 
         // store product into database
         saveProduct() {
+            console.log('=============')
+            console.log(this.product_variant)
+            console.log('===========')
             let product = {
-                title: this.product_name,
-                sku: this.product_sku,
-                description: this.description,
-                product_image: this.images,
-                product_variant: this.product_variant,
-                product_variant_prices: this.product_variant_prices
+                // title: this.product_name,
+                // sku: this.product_sku,
+                // description: this.description,
+                // product_image: this.images,
+                // product_variant: this.product_variant,
+                // product_variant_prices: this.product_variant_prices
             }
 
 

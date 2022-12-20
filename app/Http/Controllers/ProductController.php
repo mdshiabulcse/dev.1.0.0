@@ -29,11 +29,11 @@ class ProductController extends Controller
             $productIds = Product::where('title', 'like', '%'.$request->title.'%')->pluck('id')->toArray();
             $productIds = ProductVariant::whereIn('product_id', $productIds)->where('variant', $request->variant)->pluck('product_id')->toArray();
             $productIds = ProductVariantPrice::whereIn('product_id', $productIds)->whereBetween('price', [$request->price_from, $request->price_to])->pluck('product_id')->toArray();
-            $data['products'] = Product::whereIn('id', $productIds)->whereDate('created_at', date('Y-m-d', strtotime($request->date)))->get();
+            $data['products'] = Product::whereIn('id', $productIds)->whereDate('created_at', date('Y-m-d', strtotime($request->date)))->paginate(10);
 
         }
         else{
-            $data['products']=Product::with('product_variant','product_variant_price')->get();
+            $data['products']=Product::with('product_variant','product_variant_price')->paginate(10);
         }
 
 
@@ -78,13 +78,19 @@ class ProductController extends Controller
 //        dd($request->product_variant);
 
         foreach ($request->product_variant as $variant_data){
+            $data['variant_save']=new ProductVariant();
+            $data['variant_save']->variant= $variant_data->variant;
+            $data['variant_save']->variant_id= $variant_data->variant_id;
+            $data['variant_save']->product_id= 1;
+            $data['variant_save']->save();
+        }
 
-
-            $data['productStore']=new ProductVariant();
-            $data['productStore']->variant= $variant_data->variant;
-            $data['productStore']->variant_id= $variant_data->variant_id;
-            $data['productStore']->product_id= 1;
-            $data['productStore']->save();
+        foreach ($request->product_variant_prices as $product_variant_price){
+            $data['variant_price_save']=new ProductVariantPrice();
+            $data['variant_price_save']->price= $product_variant_price->price;
+            $data['variant_price_save']->stock= $product_variant_price->stock;
+            $data['variant_price_save']->product_id= 1;
+            $data['variant_price_save']->save();
         }
 
 

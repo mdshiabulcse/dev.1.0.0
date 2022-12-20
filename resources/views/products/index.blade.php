@@ -98,6 +98,7 @@
                     </tbody>
 
                 </table>
+                {{ $products->links() }}
             </div>
 
         </div>
@@ -105,7 +106,7 @@
         <div class="card-footer">
             <div class="row justify-content-between">
                 <div class="col-md-6">
-                    <p>Showing 1 to 10 out of 100</p>
+                    <p>Showing 1 to 10 out of {{ $product->count('id') }}</p>
                 </div>
                 <div class="col-md-2">
 
